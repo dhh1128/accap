@@ -8,7 +8,7 @@
 import sys
 import getch
 
-def prompt(msg, choices=None, default='', normfunc=None, readline=None):
+def prompt(msg, choices=None, default='', normfunc=None, acceptfunc=None, readline=None):
     '''
     Ask user a question and read their response.
 
@@ -19,6 +19,9 @@ def prompt(msg, choices=None, default='', normfunc=None, readline=None):
            re-prompted until they satisfy the function.
     @param normfunc A function that will be used to normalize the answer.
            Takes a string and returns an answer in any data type.
+    @param acceptfunc A function that will be used to decide whether the answer
+           is acceptable. Takes a string and returns True or False. This function
+           is called after normfunc.
     @param readline A function that will be used to read the user's answer.
            Normally this is sys.stdin.readline, but it can also be
            readline_masked() if prompting for a password.
@@ -46,10 +49,11 @@ def prompt(msg, choices=None, default='', normfunc=None, readline=None):
         answer = readline().rstrip()
         if normfunc:
             answer = normfunc(answer)
-        if not answer:
-            if default is None:
-                continue
+        if (not answer) and (default is not None):
             answer = default
+        elif acceptfunc:
+            if not acceptfunc(answer):
+                continue
         return answer
 
 def prompt_bool(msg, default=None):
