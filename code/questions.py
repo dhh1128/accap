@@ -6,6 +6,18 @@ from textui.prompt import *
 def _strip_and_lower_case(txt):
     return txt.strip().lower()
 
+def _norm_list(txt):
+    txt = re.sub('[,;]', ' ', _strip_and_lower_case(txt))
+    txt = re.sub(' +', ' ', txt)
+    items = txt.split(' ')
+    x = {}
+    for i in items:
+        x[i] = 1
+    items = x.keys()
+    items.sort()
+    txt = ','.join(items)
+    return txt
+
 def fancy_prompt(q, regex, answers, dflt=None, normfunc=None, acceptfunc=None, comment=None):
     key = q.strip().lower()
     if not normfunc:
@@ -26,6 +38,18 @@ def which_mode(answers):
     
 def num_nodes(answers):
     answer = fancy_prompt('Number of nodes', '[1-9][0-9]{0,4}', answers)
+    return num_hypervisors
     
+def num_hypervisors(answers):
+    answer = fancy_prompt('Number of hypervisors', '[1-9][0-9]{0,4}', answers)
+    return num_new_jobs_per_hour
+
+def num_new_jobs_per_hour(answers):
+    answer = fancy_prompt('Number of new jobs per hour', '[1-9][0-9]{0,3}', answers)
+    return which_rm
+    
+def which_rm(answers):
+    answer = fancy_prompt('Which RMs', '(slurm|torque|fifo)([, ]+(slurm|torque|fifo))*', answers, normfunc=_norm_list)
+
 first = which_mode    
     
