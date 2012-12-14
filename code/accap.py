@@ -56,7 +56,13 @@ def interact(answers):
         next_q = next_q(answers)
         
 def predict(answers):
-    return {'first prediction': 'the sun will come up tomorrow'}
+    predictions = {}
+    predictions['first prediction'] = 'the sun will come up tomorrow'
+    predictions['favorite color'] = 10
+    predictions['RAM required GB'] = int(answers['number of hypervisors']) / 10
+    predictions['diskspace required'] = int(answers['number of hypervisors'])
+    predictions['# of nodes'] = int(answers ['number of nodes']) +  20
+    return predictions
 
 def recommend(answers, predictions):
     return {'first recommendation': "don't look a gift horse in the mouth"}

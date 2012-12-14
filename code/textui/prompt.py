@@ -7,8 +7,8 @@
 #
 import sys
 import getch
-
-def prompt(msg, choices=None, default='', normfunc=None, acceptfunc=None, readline=None):
+from ansi import *
+def prompt(msg, choices=None, default='', normfunc=None, acceptfunc=None, readline=None, explanation=None):
     '''
     Ask user a question and read their response.
 
@@ -26,17 +26,18 @@ def prompt(msg, choices=None, default='', normfunc=None, acceptfunc=None, readli
            Normally this is sys.stdin.readline, but it can also be
            readline_masked() if prompting for a password.
     '''
-    txt = msg
+    
+    qtext = msg
+    
     showDefault = not (default is None) and not (default == '')
     if choices:
         if showDefault:
-            txt += ' (%s; =%s)' % (choices, str(default))
+            options = ' (%s; =%s)' % (choices, str(default))
         else:
-            txt += ' (%s)' % choices
+            options = ' (%s)' % choices
     elif showDefault:
-        txt += ' ( =%s)' % str(default)
-
-    txt += ' '
+        options = ' ( =%s)' % str(default)
+  
 
     # We can't bind this value in the function prototype, because then it would
     # be bound once, forever. In that case any attempt to override/redirect
@@ -45,7 +46,11 @@ def prompt(msg, choices=None, default='', normfunc=None, acceptfunc=None, readli
         readline = sys.stdin.readline
 
     while True:
-        sys.stdout.write(txt)
+        #if explanation:
+        #    writec(YELLOW + explanation)
+        writec(WHITE + qtext)
+        writec(GREEN + options + ' ')
+        writec(RED)
         answer = readline().rstrip()
         if normfunc:
             answer = normfunc(answer)
@@ -54,6 +59,7 @@ def prompt(msg, choices=None, default='', normfunc=None, acceptfunc=None, readli
         elif acceptfunc:
             if not acceptfunc(answer):
                 continue
+        printc(NORMTXT)
         return answer
 
 def prompt_bool(msg, default=None):
