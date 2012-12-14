@@ -8,12 +8,12 @@
 #
 
 import unittest, os, sys
-from nose.plugins.attrib import attr
+#from nose.plugins.attrib import attr
 
 sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'code'))
 from textui.ansi import *
 
-@attr('interactive')
+#@attr('interactive')
 class AnsiTest(unittest.TestCase):
     def setUp(self):
         self.use_colors = ansi.get_use_colors()
@@ -46,3 +46,6 @@ to stderr"? (y/n) ''')
                 return
             else:
                 print("Please enter 'y' or 'n'.")
+
+if __name__ == '__main__':
+    unittest.main()

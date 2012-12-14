@@ -6,7 +6,7 @@
 # All rights reserved.
 #
 import unittest, os, sys, StringIO
-from nose.plugins.attrib import attr
+#from nose.plugins.attrib import attr
 sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'code'))
 from textui.prompt import *
 
@@ -22,7 +22,7 @@ def _text_repeats(txt, fragment):
 def _text_has(txt, fragment):
     return txt.find(fragment) > -1
 
-@attr('interactive')
+#@attr('interactive')
 class InteractivePromptTest(unittest.TestCase):
     def stuff(self, txt_for_stdin):
         # Overridden in AutomatedPromptTest

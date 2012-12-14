@@ -14,6 +14,12 @@ def which_mode(answers):
                     normfunc=_strip_and_lower_case,
                     acceptfunc=lambda x: re.match('cloud|hpc', x))
     answers[key] = answer
+    return what_is_your_quest
+    
+def what_is_your_quest(answers):
+    key = 'what is your quest'
+    answer = prompt('What is your quest, fair knight?')
+    answers[key] = answer
     
 first = which_mode    
     
