@@ -38,9 +38,10 @@ def write(fname, answers, predictions, recommendations):
         display(data)
     else:
         cfg = ConfigParser.RawConfigParser()
+        print data
         for key, valmap in data.items():
             cfg.add_section(key)
-            for name, value in valmap:
+            for name, value in valmap.items():
                 cfg.set(name, value)
         new = fname + '.new'
         f = open(new, 'w')

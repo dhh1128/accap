@@ -8,7 +8,7 @@
 import sys
 import getch
 from ansi import *
-def prompt(msg, choices=None, default='', normfunc=None, acceptfunc=None, readline=None, explanation=None):
+def prompt(msg, choices=None, default='', normfunc=None, acceptfunc=None, readline=None, explanation=None,question = None):
     '''
     Ask user a question and read their response.
 
@@ -34,10 +34,11 @@ def prompt(msg, choices=None, default='', normfunc=None, acceptfunc=None, readli
         if showDefault:
             options = ' (%s; =%s)' % (choices, str(default))
         else:
-            options = ' (%s)' % choices
+            options = ' (%s)' % question
     elif showDefault:
         options = ' ( =%s)' % str(default)
-  
+    else:
+        options = ''
 
     # We can't bind this value in the function prototype, because then it would
     # be bound once, forever. In that case any attempt to override/redirect

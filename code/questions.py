@@ -18,7 +18,7 @@ def _norm_list(txt):
     txt = ','.join(items)
     return txt
 
-def fancy_prompt(q, regex,  answers, dflt=None, normfunc=None, acceptfunc=None, comment=None):
+def fancy_prompt(q, regex,  answers, dflt=None, normfunc=None, acceptfunc=None, comment=None,question = None):
     key = q.strip().lower()
     if not normfunc:
         normfunc = _strip_and_lower_case
@@ -29,7 +29,7 @@ def fancy_prompt(q, regex,  answers, dflt=None, normfunc=None, acceptfunc=None, 
         print('')
    
     answer = prompt(q, regex, default=answers.get(key, dflt),
-                    normfunc=normfunc, acceptfunc=acceptfunc)
+                    normfunc=normfunc, acceptfunc=acceptfunc,question = question)
     printc(NORMTXT)
     answers[key] = answer
     return answer
@@ -44,28 +44,33 @@ def what_is_your_quest(answers):
 
 def which_mode(answers):
     string1 = 'please enter in your deployment'
-    answer = fancy_prompt('Type of deployment', '(cloud|hpc)', answers, comment = string1)
+    string2 = '(cloud|hpc)'
+    answer = fancy_prompt('Type of deployment', '(cloud|hpc)', answers, comment = string1, question = string2)
     return num_nodes
 
     
 def num_nodes(answers):
-    string2 = 'please enter in nodes'
-    answer = fancy_prompt('Number of nodes', '[1-9][0-9]{0,4}', answers, comment = string2)
+    string1 = 'please enter in nodes'
+    string2 = 'a number between 1 and 100'
+    answer = fancy_prompt('Number of nodes', '[1-9][0-9]{0,4}', answers, comment = string1, question = string2)
     return num_hypervisors
     
 def num_hypervisors(answers):
-    string3 = 'please enter in hypervisors'
-    answer = fancy_prompt('Number of hypervisors', '[1-9][0-9]{0,4}', answers, comment = string3)
+    string1 = 'please enter in hypervisors'
+    string2 = 'a number between 1 and 10'
+    answer = fancy_prompt('Number of hypervisors', '[1-9][0-9]{0,4}', answers, comment = string1, question = string2)
     return num_new_jobs_per_hour
 
 def num_new_jobs_per_hour(answers):
-    string4 = 'please enter in jobs'
-    answer = fancy_prompt('Number of new jobs per hour', '[1-9][0-9]{0,3}', answers, comment = string4)
+    string1 = 'please enter in jobs'
+    string2 = 'a number between 1 and 50'
+    answer = fancy_prompt('Number of new jobs per hour', '[1-9][0-9]{0,3}', answers, comment = string1,question = string2)
     return which_rm
     
 def which_rm(answers):
-    string5 = 'please enter in RMs\''
-    answer = fancy_prompt('Which RMs', '(slurm|torque|fifo)([, ]+(slurm|torque|fifo))*', answers, normfunc=_norm_list,comment = string5)
+    string1 = 'please enter in RMs'
+    string2 = '(slurm|torque|fifo)'
+    answer = fancy_prompt('Which RMs', '(slurm|torque|fifo)([, ]+(slurm|torque|fifo))*', answers, normfunc=_norm_list,comment = string1,question = string2)
     return what_is_your_quest
 first = which_mode    
     
