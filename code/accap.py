@@ -61,14 +61,17 @@ def predict(answers):
     predictions['first prediction'] = 'the sun will come up tomorrow'
     predictions['favorite color'] = 10
     perJob = int(answers['number of hypervisors'])
-    calcMAM = perJob * 2000
+    calcMAM = (perJob * 2000) * .000001
+    calcMAM = round(calcMAM, 2)
     if perJob < 500:
-        predictions['RAM required GB'] = perJob * 207 + 1306700 + calcMAM
+        ram_space = (perJob * 207 + 1306700) * .000001
     elif perJob < 1000:
-        predictions['RAM required GB'] = perJob * 94 + 1311324 + calcMAM
+        ram_space = (perJob * 94 + 1311324) * .000001
     else:
-        predictions['RAM required GB'] = perJob * 2284 - 2538300 + calcMAM
-    predictions['diskspace required'] = int(answers['number of hypervisors'])
+        ram_space = (perJob * 2284 - 2538300) * .000001 
+    ram_space = round(ram_space, 2)
+    predictions['RAM required GB'] = ram_space    
+    predictions['diskspace required'] = int(answers['number of hypervisors']) * 2000
     predictions['# of nodes'] = int(answers ['number of nodes']) +  20
     return predictions
 
