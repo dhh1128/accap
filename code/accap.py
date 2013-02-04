@@ -57,21 +57,24 @@ def interact(answers):
         next_q = next_q(answers)
         
 def predict(answers):
+    viewPoint_memory = 1500
+    MWS_memory = 700
+    httpd_memory = 95.4
+    mongod_memory = 63.7
+    msmd_memory = 20
+    number_of_jobs = int(answers['number of new jobs per hour'])
+    calcMAM = round((number_of_jobs * 2000) * .000001,2)
+    calcTorque =  (number_of_jobs * 0.0015) + 50
     predictions = {}
-    predictions['first prediction'] = 'the sun will come up tomorrow'
-    predictions['favorite color'] = 10
-    perJob = int(answers['number of hypervisors'])
-    calcMAM = (perJob * 2000) * .000001
-    calcMAM = round(calcMAM, 2)
-    if perJob < 500:
-        ram_space = (perJob * 207 + 1306700) * .000001
-    elif perJob < 1000:
-        ram_space = (perJob * 94 + 1311324) * .000001
+    if number_of_jobs < 500:
+        calcMoab = (number_of_jobs * 207 + 1306700) * .000001 + 50
+    elif number_of_jobs < 1000:
+        calcMoab = (number_of_jobs * 94 + 1311324) * .000001 + 50
     else:
-        ram_space = (perJob * 2284 - 2538300) * .000001 
-    ram_space = round(ram_space, 2)
-    predictions['RAM required GB'] = ram_space    
-    predictions['diskspace required'] = int(answers['number of hypervisors']) * 2000
+        calcMoab = ((number_of_jobs * 2284 - 2538300) * .000001) + 50 
+    ram_total = round(((calcMoab + calcTorque + MWS_memory + httpd_memory + mongod_memory + msmd_memory + viewPoint_memory) * .001),1) + .1
+    predictions['RAM required GB'] = ram_total
+    predictions['diskspace required MB'] = calcMAM
     predictions['# of nodes'] = int(answers ['number of nodes']) +  20
     return predictions
 
