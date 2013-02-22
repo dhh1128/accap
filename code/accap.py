@@ -64,7 +64,7 @@ def predict(answers):
     msmd_memory = 20
     number_of_jobs = int(answers['number of new jobs per hour'])
     calcMAM = round((number_of_jobs * 2000) * .000001,2)
-    calcTorque =  (number_of_jobs * 0.0015) + 50
+    calcTorque =  150 
     predictions = {}
     if number_of_jobs < 500:
         calcMoab = (number_of_jobs * 207 + 1306700) * .000001 + 50
