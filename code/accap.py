@@ -62,24 +62,23 @@ def predict(answers):
     httpd_memory = 95.4
     mongod_memory = 63.7
     msmd_memory = 20
-    number_of_jobs = int(answers['number of new jobs per hour'])
-    calcMAM = round((number_of_jobs * 2000) * .000001,2)
-    calcTorque =  150 
+    number_of_jobs = int(answers['number of jobs'])
+    MAM_diskspace = round((number_of_jobs * 2000) * .000001,2)
+    torque_memory =  number_of_jobs * .001
+    moab_memory = number_of_jobs * 1
     predictions = {}
-    if number_of_jobs < 500:
-        calcMoab = (number_of_jobs * 207 + 1306700) * .000001 + 50
-    elif number_of_jobs < 1000:
-        calcMoab = (number_of_jobs * 94 + 1311324) * .000001 + 50
-    else:
-        calcMoab = ((number_of_jobs * 2284 - 2538300) * .000001) + 50 
-    ram_total = round(((calcMoab + calcTorque + MWS_memory + httpd_memory + mongod_memory + msmd_memory + viewPoint_memory) * .001),1) + .1
+    ram_total = round(((moab_memory + torque_memory + MWS_memory + httpd_memory + mongod_memory + msmd_memory + viewPoint_memory) * .001),1) + .1
     predictions['RAM required GB'] = ram_total
-    predictions['diskspace required MB'] = calcMAM
+    predictions['diskspace required MB'] = MAM_diskspace
     predictions['# of nodes'] = int(answers ['number of nodes']) +  20
     return predictions
 
 def recommend(answers, predictions):
-    return {'first recommendation': "don't look a gift horse in the mouth"}
+    recommendations = {}
+    recommendations['Diskspace per year used '] = " %s GB" % (float(answers['number of new jobs per hour']) * .017520) 
+    recommendations['Machines recommended '] = " %s machines" % ((((int(answers['number of jobs']) / 10000) + 1) * 2) + 2)
+    recommendations['Memory recommended '] = " %s GB of memory" % float(predictions['RAM required GB'])
+    return recommendations
         
 def main(options):
     answers = read(options.read)

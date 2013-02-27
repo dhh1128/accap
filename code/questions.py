@@ -35,20 +35,12 @@ def fancy_prompt(q, regex,  answers, dflt=None, normfunc=None, acceptfunc=None, 
     return answer
 
   
-    
-def what_is_your_quest(answers):
-    key = 'what is your quest'
-    answer = prompt('What is your quest, fair knight?')
-    answers[key] = answer
-
-
 def which_mode(answers):
     string1 = 'please enter in your deployment'
     string2 = '(cloud|hpc)'
     answer = fancy_prompt('Type of deployment', '(cloud|hpc)', answers, comment = string1, question = string2)
     return num_nodes
 
-    
 def num_nodes(answers):
     string1 = 'please enter in nodes'
     string2 = 'a number between 1 and 100'
@@ -59,10 +51,17 @@ def num_hypervisors(answers):
     string1 = 'please enter in hypervisors'
     string2 = 'a number between 1 and 10'
     answer = fancy_prompt('Number of hypervisors', '[1-9][0-9]{0,4}', answers, comment = string1, question = string2)
+    return num_of_jobs
+
+def num_of_jobs(answers):
+    string1 = 'please enter in jobs'
+    string2 = 'a number between 1 and 50'
+    answer = fancy_prompt('Number of jobs', '[1-9][0-9]{0,3}', answers, comment = string1,question = string2)
     return num_new_jobs_per_hour
 
+    
 def num_new_jobs_per_hour(answers):
-    string1 = 'please enter in jobs'
+    string1 = 'please enter in jobs per hour'
     string2 = 'a number between 1 and 50'
     answer = fancy_prompt('Number of new jobs per hour', '[1-9][0-9]{0,3}', answers, comment = string1,question = string2)
     return which_rm
@@ -71,6 +70,6 @@ def which_rm(answers):
     string1 = 'please enter in RMs'
     string2 = '(slurm|torque|fifo)'
     answer = fancy_prompt('Which RMs', '(slurm|torque|fifo)([, ]+(slurm|torque|fifo))*', answers, normfunc=_norm_list,comment = string1,question = string2)
-    return what_is_your_quest
+    
 first = which_mode    
     
