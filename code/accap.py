@@ -58,18 +58,18 @@ def interact(answers):
         
 def predict(answers):
     viewPoint_memory = 1500
+    bytes_per_year_in_GB = .017520  # 1 GB per 1,000,000,000 bytes * 365 days per year * 24 hours per day * 2000 bytes
     MWS_memory = 700
     httpd_memory = 95.4
     mongod_memory = 63.7
     msmd_memory = 20
     number_of_jobs = int(answers['number of jobs'])
-    MAM_diskspace = round((number_of_jobs * 2000) * .000001,2)
-    torque_memory =  number_of_jobs * .001
-    moab_memory = number_of_jobs * 1
+    torque_memory =  number_of_jobs * .001 # 1/100 of a MB per job for Torque
+    moab_memory = number_of_jobs * 1 # 1 MB per job for Moab
     predictions = {}
-    ram_total = round(((moab_memory + torque_memory + MWS_memory + httpd_memory + mongod_memory + msmd_memory + viewPoint_memory) * .001),1) + .1
+    ram_total = round(((moab_memory + torque_memory + MWS_memory + httpd_memory + mongod_memory + msmd_memory + viewPoint_memory) * .001),1) + .1 # rounding to GB to the first decimal place and round up
     predictions['RAM required GB'] = ram_total
-    predictions['Diskspace per year used '] = " %s GB" % (float(answers['number of new jobs per hour']) * .017520)
+    predictions['Diskspace per year used '] = " %s GB" % (float(answers['number of new jobs per hour']) * bytes_per_year_in_GB)
     
     return predictions
 
