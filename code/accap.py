@@ -69,14 +69,13 @@ def predict(answers):
     predictions = {}
     ram_total = round(((moab_memory + torque_memory + MWS_memory + httpd_memory + mongod_memory + msmd_memory + viewPoint_memory) * .001),1) + .1
     predictions['RAM required GB'] = ram_total
-    predictions['diskspace required MB'] = MAM_diskspace
-    predictions['# of nodes'] = int(answers ['number of nodes']) +  20
+    predictions['Diskspace per year used '] = " %s GB" % (float(answers['number of new jobs per hour']) * .017520)
+    
     return predictions
 
 def recommend(answers, predictions):
     recommendations = {}
-    recommendations['Diskspace per year used '] = " %s GB" % (float(answers['number of new jobs per hour']) * .017520) 
-    recommendations['Machines recommended '] = " %s machines" % ((((int(answers['number of jobs']) / 10000) + 1) * 2) + 2)
+    recommendations['Machines recommended '] = " %s machines" % (((int(answers['number of jobs']) / 10000) + 1)  + 2)
     recommendations['Memory recommended '] = " %s GB of memory" % float(predictions['RAM required GB'])
     return recommendations
         
